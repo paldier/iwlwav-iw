@@ -402,7 +402,7 @@ static int handle_iwlwav_set_coc_power(struct nl80211_state *state,
                                           int argc, char **argv,
                                           enum id_input id)
 {
-	return set_int(state, msg, argc, argv, id, 1, 3, LTQ_NL80211_VENDOR_SUBCMD_SET_COC_POWER_MODE);
+	return set_int(state, msg, argc, argv, id, 1, 7, LTQ_NL80211_VENDOR_SUBCMD_SET_COC_POWER_MODE);
 }
 COMMAND(iwlwav, sCoCPower, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_set_coc_power, "");
 
@@ -411,7 +411,7 @@ static int handle_iwlwav_set_coc_auto_cfg(struct nl80211_state *state,
                                           int argc, char **argv,
                                           enum id_input id)
 {
-	return set_int(state, msg, argc, argv, id, 10, 10, LTQ_NL80211_VENDOR_SUBCMD_SET_COC_AUTO_PARAMS);
+	return set_int(state, msg, argc, argv, id, 10, 14, LTQ_NL80211_VENDOR_SUBCMD_SET_COC_AUTO_PARAMS);
 }
 COMMAND(iwlwav, sCoCAutoCfg, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_set_coc_auto_cfg, "");
 
@@ -577,6 +577,15 @@ static int handle_intel_vendor_set_scan_cal_exp_time(struct nl80211_state *state
 	return set_int(state, msg, argc, argv, id, 1, 1, LTQ_NL80211_VENDOR_SUBCMD_SET_SCAN_EXP_TIME);
 }
 COMMAND(iwlwav, sScanExpTime, ">", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_intel_vendor_set_scan_cal_exp_time, "");
+
+static int handle_iwlwav_set_out_of_scan_caching(struct nl80211_state *state,
+                                          struct nl_msg *msg,
+                                          int argc, char **argv,
+                                          enum id_input id)
+{
+	return set_int(state, msg, argc, argv, id, 1, 1, LTQ_NL80211_VENDOR_SUBCMD_SET_OUT_OF_SCAN_CACHING);
+}
+COMMAND(iwlwav, sOOScanCaching, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_set_out_of_scan_caching, "");
 
 static int handle_iwlwav_set_tasklet_limits(struct nl80211_state *state,
                                           struct nl_msg *msg,
@@ -972,7 +981,7 @@ static int handle_iwlwav_set_erp_set(struct nl80211_state *state,
                                           int argc, char **argv,
                                           enum id_input id)
 {
-	return set_int(state, msg, argc, argv, id, 4, 4, LTQ_NL80211_VENDOR_SUBCMD_SET_ERP);
+	return set_int(state, msg, argc, argv, id, 10, 10, LTQ_NL80211_VENDOR_SUBCMD_SET_ERP);
 }
 COMMAND(iwlwav, sErpSet, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_set_erp_set, "");
 
@@ -1112,6 +1121,16 @@ static int handle_iwlwav_set_he_mu_duration(struct nl80211_state *state,
 	return set_int(state, msg, argc, argv, id, 4, 4, LTQ_NL80211_VENDOR_SUBCMD_SET_HE_MU_DURATION);
 }
 COMMAND(iwlwav, sMuDurationCfg, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_set_he_mu_duration, "");
+
+static int handle_iwlwav_set_tx_retry_limit(struct nl80211_state *state,
+                                          struct nl_msg *msg,
+                                          int argc, char **argv,
+                                          enum id_input id)
+{
+	return set_int(state, msg, argc, argv, id, 1, 1, LTQ_NL80211_VENDOR_SUBCMD_SET_AP_RETRY_LIMIT);
+}
+COMMAND(iwlwav, sTxRetryLimit, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_set_tx_retry_limit, "");
+
 
 /***************************** GET FUNCTIONS *****************************/
 static int print_he_operation_bss_color(struct nl_msg *msg, void *arg)
@@ -1620,7 +1639,7 @@ static int handle_iwlwav_get_coc_power(struct nl80211_state *state,
 			      struct nl_msg *msg, int argc,
 			      char **argv, enum id_input id)
 {
-	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_COC_POWER_MODE, 3, "gCoCPower");
+	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_COC_POWER_MODE, 7, "gCoCPower");
 }
 COMMAND(iwlwav, gCoCPower, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_coc_power, "");
 
@@ -1628,9 +1647,17 @@ static int handle_iwlwav_get_coc_auto_cfg(struct nl80211_state *state,
 			      struct nl_msg *msg, int argc,
 			      char **argv, enum id_input id)
 {
-	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_COC_AUTO_PARAMS, 10, "gCoCAutoCfg");
+	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_COC_AUTO_PARAMS, 14, "gCoCAutoCfg");
 }
 COMMAND(iwlwav, gCoCAutoCfg, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_coc_auto_cfg, "");
+
+static int handle_iwlwav_get_erp_cfg(struct nl80211_state *state,
+			      struct nl_msg *msg, int argc,
+			      char **argv, enum id_input id)
+{
+	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_ERP_CFG, 10, "gErpSet");
+}
+COMMAND(iwlwav, gErpSet, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_erp_cfg, "");
 
 static int handle_iwlwav_get_pcoc_power(struct nl80211_state *state,
 			      struct nl_msg *msg, int argc,
@@ -1759,6 +1786,14 @@ static int handle_iwlwav_get_scan_exp_time(struct nl80211_state *state,
 	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_SCAN_EXP_TIME, 1, "gScanExpTime");
 }
 COMMAND(iwlwav, gScanExpTime, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_scan_exp_time, "");
+
+static int handle_iwlwav_get_out_of_scan_caching(struct nl80211_state *state,
+			      struct nl_msg *msg, int argc,
+			      char **argv, enum id_input id)
+{
+	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_OUT_OF_SCAN_CACHING, 1, "gOOScanCaching");
+}
+COMMAND(iwlwav, gOOScanCaching, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_out_of_scan_caching, "");
 
 static int handle_iwlwav_get_genl_family_id(struct nl80211_state *state,
 			      struct nl_msg *msg, int argc,
@@ -2152,6 +2187,14 @@ static int handle_iwlwav_get_stations_statistics(struct nl80211_state *state,
 }
 COMMAND(iwlwav, gStationsStat, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_stations_statistics, "");
 
+static int handle_iwlwav_get_rts_threshold(struct nl80211_state *state,
+			      struct nl_msg *msg, int argc,
+			      char **argv, enum id_input id)
+{
+	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_RTS_THRESHOLD, 1, "gRtsThreshold");
+}
+COMMAND(iwlwav, gRtsThreshold, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_rts_threshold, "");
+
 static int handle_iwlwav_get_stats_poll_period(struct nl80211_state *state,
 			      struct nl_msg *msg, int argc,
 			      char **argv, enum id_input id)
@@ -2242,6 +2285,15 @@ static int handle_iwlwav_get_ax_default_params(struct nl80211_state *state,
 	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_AX_DEFAULT_PARAMS, num_of_params, "gAxDefaultParams");
 }
 COMMAND(iwlwav, gAxDefaultParams, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_ax_default_params, "");
+
+static int handle_iwlwav_get_tx_retry_limit(struct nl80211_state *state,
+			      struct nl_msg *msg, int argc,
+			      char **argv, enum id_input id)
+{
+	return sub_cmd_print_int_function(state, msg, argc, argv, id, LTQ_NL80211_VENDOR_SUBCMD_GET_AP_RETRY_LIMIT, 1, "gTxRetryLimit");
+}
+COMMAND(iwlwav, gTxRetryLimit, "", NL80211_CMD_VENDOR, 0, CIB_NETDEV, handle_iwlwav_get_tx_retry_limit, "");
+
 /***************************** HELP FUNCTION *****************************/
 
 static int handle_iwlwav_help(struct nl80211_state *state,
@@ -2562,6 +2614,8 @@ static int handle_iwlwav_help(struct nl80211_state *state,
 	printf("\t\tSet HE MU Fixed parameters.\n\n");
 	printf("\tdev <devname> iwlwav sMuDurationCfg <ppdu duration> <txop duration> <tf length> <num of repetitions>\n");
 	printf("\t\tSet HE MU Duration.\n\n");
+	printf("\tdev <devname> iwlwav sTxRetryLimit <0..31>\n");
+	printf("\t\tSet Tx Retry Limit.\n\n");
 	printf("\tdev <devname> iwlwav gDTIMPeriod\n\n");
 	printf("\tdev <devname> iwlwav gBeaconPeriod\n\n");
 	printf("\tdev <devname> iwlwav g11hRadarDetect\n\n");
@@ -2664,6 +2718,9 @@ static int handle_iwlwav_help(struct nl80211_state *state,
 	printf("\tdev <devname> iwlwav gHEOperationBssColor\n\n");
 	printf("\tdev <devname> iwlwav gTwtParams <station mac address>\n\n");
 	printf("\tdev <devname> iwlwav gAxDefaultParams\n\n");
+	printf("\tdev <devname> iwlwav gRtsThreshold\n\n");
+	printf("\tdev <devname> iwlwav gTxRetryLimit\n\n");
+
 	return 0;
 }
 COMMAND(iwlwav, help, "", 0, 0, CIB_NETDEV, handle_iwlwav_help, "");
